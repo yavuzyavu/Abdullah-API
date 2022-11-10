@@ -4,7 +4,10 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.Test;
 
+import java.util.List;
+
 import static io.restassured.RestAssured.given;
+import static org.junit.Assert.assertEquals;
 
 public class Odev01 {
     /*
@@ -29,7 +32,23 @@ public class Odev01 {
         Response response = given().when().get(url);
         response.prettyPrint();
 
+
+        //Do Assertion
         response.then().statusCode(200).contentType("text/html; charset=utf-8").statusLine("HTTP/1.1 200 OK");
+
+        List<String> brandList = response.htmlPath().getList("brands.brand");
+        int numOfHM = 0;
+        int numOfPolu = 0;
+        for (String w : brandList) {
+            if (w.equals("H&M")){
+                numOfHM++;
+            }
+            if(w.equals("Polo")){
+                numOfPolu++;
+            }
+        }
+
+        assertEquals(numOfHM,numOfPolu);
 
     }
 }
